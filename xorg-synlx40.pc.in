@@ -1,0 +1,6 @@
+sdkdir=@sdkdir@
+
+Name: synlx40
+Description: X.Org synaptics input driver.
+Version: @PACKAGE_VERSION@
+Cflags: -I${sdkdir}
