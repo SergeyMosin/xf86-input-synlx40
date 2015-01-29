@@ -51,13 +51,8 @@
  *		Definitions
  *					structs, typedefs, #defines, enums
  *****************************************************************************/
-#define SYNAPTICS_MOVE_HISTORY	5
-#define SYNAPTICS_MAX_TOUCHES	10
 #define SYN_MAX_BUTTONS 12      /* Max number of mouse buttons */
 
-/* Minimum and maximum values for scroll_button_repeat */
-#define SBR_MIN 10
-#define SBR_MAX 1000
 #define MAX_TP 2 /* Max track points*/
 
 static const int INT_SHIFT = sizeof(int)*CHAR_BIT-1;
@@ -167,7 +162,7 @@ typedef struct _SynapticsParameters {
 
 	int tap_pressure; 						// default = 50;
 	int tap_anywhere;						// 0-disable, 1 - enable
-	int tap_hold;							// Tap Hold Guesture - default timeOut=150 in ms/0-disable
+	int tap_hold;							// Tap Hold Gesture - default timeOut=150 in ms/0-disable
 
 } SynapticsParameters;
 
@@ -235,7 +230,7 @@ struct _SynapticsPrivateRec {
 
     int timer_y_scroll;			// cont y scroll
 
-    CARD32 tap_start_time;		// let's call tap_anywhere stabilizer timeout
+    CARD32 tap_start_time;		// let's call this tap_anywhere stabilizer timeout
 };
 
 #endif                          /* _SYNAPTICSSTR_H_ */

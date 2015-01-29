@@ -1065,7 +1065,6 @@ timerClick(InputInfoPtr pInfo, struct ns_inf *pti){
 	if(priv->timer_click_finish){
 		xf86PostButtonEvent(pInfo->dev, FALSE, priv->timer_click_mask, FALSE, 0, 0);
 		priv->timer_click_finish=FALSE;
-		//~ if(force_reclick) timerClick(pInfo,pti,FALSE);
 		priv->timer_click_mask=0;
 	}else if(priv->timer_delta_x<para->tap_move && priv->timer_delta_y<para->tap_move){
 		xf86PostButtonEvent(pInfo->dev, FALSE, priv->timer_click_mask, TRUE, 0, 0);
@@ -1256,7 +1255,7 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 	int i;
 	int x,y;
 	enum TouchOrigin cba;
-	int potentail_click=0;
+	int potential_click=0;
 
 	priv->scroll_delta_y=0;
 	priv->scroll_delta_x=0;
@@ -1346,9 +1345,9 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 		x=hwt->x;
 		y=hwt->y;
 
-		// if we don't know X & Y than assume potentail left button and go to next finger
+		// if we don't know X & Y than assume potential left button and go to next finger
 		if(!x || !y){
-			potentail_click|=1;
+			potential_click|=1;
 			continue;
 		}
 
@@ -1392,8 +1391,15 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 			// THG stuff
 			if(pti->tap_state==TS_WAIT){
 
-				// tap_anywhere setting
-				int tto=!pti->touch_origin?pti->touch_origin+para->tap_anywhere:pti->touch_origin;
+				int tto;
+				//~ =!pti->touch_origin?pti->touch_origin+para->tap_anywhere:pti->touch_origin;
+
+				// tap_anywhere THG move restrict
+				if(para->tap_anywhere && !pti->touch_origin &&
+					priv->timer_delta_x<para->tap_move && priv->timer_delta_y<para->tap_move){
+					tto=1;
+				}else tto=pti->touch_origin;
+
 
 				if(ffs(tto)==priv->timer_click_mask){ // <-- tap origin is the same
 					xf86PostButtonEvent(pInfo->dev, FALSE, priv->timer_click_mask, TRUE, 0, 0);
@@ -1418,8 +1424,8 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 			dx+=(x-pti->hist_x);
 			dy+=(y-pti->hist_y);
 		}else if(cba>0){
-			// set potentail_click if we are in a button area
-			potentail_click|=cba;
+			// set potential_click if we are in a button area
+			potential_click|=cba;
 		}
 
 		// set history
@@ -1432,11 +1438,11 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 
 		buttons=priv->lastButtons;
 
-		// ziro potentail_click if priv->lastButtons
-		potentail_click&=-(priv->lastButtons==0);
+		// ziro potential_click if priv->lastButtons
+		potential_click&=-(priv->lastButtons==0);
 
-		// buttons = potentail_click if lastButtons==0
-		buttons|=potentail_click;
+		// buttons = potential_click if lastButtons==0
+		buttons|=potential_click;
 
 	}else if(priv->go_scroll ||
 		(new_two_down==2 &&
@@ -1457,6 +1463,11 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 			temp=(abs_sdy-abs(priv->scroll_delta_x))>>INT_SHIFT;
 			priv->scroll_delta_x&=temp;
 			priv->scroll_delta_y&=~temp;
+
+
+			//apply scroll Endable/Disable settings
+			if(!para->scroll_twofinger_vert) priv->scroll_delta_y=0;
+			if(!para->scroll_twofinger_horiz) priv->scroll_delta_x=0;
 
 			post_scroll_events(pInfo);
 

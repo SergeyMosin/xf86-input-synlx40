@@ -115,7 +115,7 @@ static struct Parameter params[] = {
 	{"TwoFingerScrollFingerSize",	PT_INT,		0, 100,	SYNAPTICS_PROP_SCROLL_TWOFINGER_FINGER_SIZE,	32,	0},
 	{"MinTapPressure",			PT_INT,		1, 255,		SYNAPTICS_PROP_TAP_EXTRAS,	32,	0},
 	{"TapAnywhere",				PT_INT,		0,	1,		SYNAPTICS_PROP_TAP_EXTRAS,	32,	1},
-	{"TapHoldGuesture",			PT_INT,		0,	30000,	SYNAPTICS_PROP_TAP_EXTRAS,	32,	2},
+	{"TapHoldGesture",			PT_INT,		0,	30000,	SYNAPTICS_PROP_TAP_EXTRAS,	32,	2},
 
     { NULL, 0, 0, 0, 0 }
 };
