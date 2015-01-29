@@ -41,7 +41,7 @@ on the clickpad*
 
 * **TapAnywhere**  - Disables/Enables taps(left button) in the "Move/Scroll" area.
 *Note: Clicks are NOT allowed in this area.*
-* **TapHoldGesture**  - Disables/Enables Tap and Hold Gesture.
+* **TapHoldGesture**  - Tap and Hold Gesture timeout, 0 to disable.
 * **TwoFingerScrollFingerSize**  - Mostly internal setting for when scroll
 originates in a button area, but if you have unusually large/small fingers try
 adjusting this.
