@@ -235,7 +235,7 @@ struct _SynapticsPrivateRec {
 
     int timer_y_scroll;			// cont y scroll
 
-    CARD32 tap_start_time;
+    CARD32 tap_start_time;		// let's call tap_anywhere stabilizer timeout
 };
 
 #endif                          /* _SYNAPTICSSTR_H_ */

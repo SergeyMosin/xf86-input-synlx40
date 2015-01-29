@@ -553,6 +553,7 @@ SynapticsPreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
 
     priv->go_scroll=FALSE;
 	priv->btn_up_time=0;
+	priv->tap_start_time=0;
 
     /* read hardware dimensions */
     ReadDevDimensions(pInfo);
@@ -721,6 +722,8 @@ SynapticsReset(SynapticsPrivate * priv)
     priv->timer_time=1;
     priv->timer_click_mask=0;
     priv->timer_click_finish=FALSE;
+
+    priv->tap_start_time=0;
 
 	memset(priv->ns_info, 0,MAX_TP*sizeof(struct ns_inf));
 
@@ -1457,8 +1460,8 @@ HandleState(InputInfoPtr pInfo, struct SynapticsHwState *hw)
 
 			post_scroll_events(pInfo);
 
-			// cont. scroll if sd>350
-			priv->timer_y_scroll=priv->scroll_delta_y&((350-abs_sdy)>>INT_SHIFT);
+			// cont. scroll if sdy>150
+			priv->timer_y_scroll=priv->scroll_delta_y&((150-abs_sdy)>>INT_SHIFT);
 		}
 
 		priv->go_scroll=TRUE;
